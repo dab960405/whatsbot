@@ -94,7 +94,16 @@ class GeminiProvider {
 
   async analyzeImage(imageBuffer, mimeType, prompt) {
   try {
-    const result = await this.model.generateContent([
+    // Modelo separado con más tokens para análisis de imágenes
+    const visionModel = this.genAI.getGenerativeModel({
+      model: this.modelName,
+      generationConfig: {
+        maxOutputTokens: 2048,  // ← suficiente para el JSON completo
+        temperature: 0.1,       // ← más determinista para JSON
+      },
+    });
+
+    const result = await visionModel.generateContent([
       prompt,
       {
         inlineData: {
