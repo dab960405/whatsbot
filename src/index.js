@@ -2,9 +2,9 @@
 // PUNTO DE ENTRADA — WhatsApp Pharmacy Bot
 // ============================================================
 
-const app = require('./src/app');
-const config = require('./src/config/env');
-const logger = require('./src/utils/logger');
+const app = require('./app');                  // ← CORREGIDO (antes: './src/app')
+const config = require('./config/env');         // ← CORREGIDO (antes: './src/config/env')
+const logger = require('./utils/logger');       // ← CORREGIDO (antes: './src/utils/logger')
 
 // -----------------------------------------------------------
 // Validación de variables críticas al arranque
@@ -23,7 +23,6 @@ function validateEnvironment() {
     logger.error('El servidor arrancará pero el bot NO funcionará correctamente.');
   }
 
-  // Validar que al menos un proveedor de IA esté configurado
   const aiReady =
     (config.AI_PROVIDER === 'gemini' && config.GEMINI_API_KEY) ||
     (config.AI_PROVIDER === 'openai' && config.OPENAI_API_KEY);
