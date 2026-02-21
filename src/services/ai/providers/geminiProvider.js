@@ -98,9 +98,9 @@ class GeminiProvider {
     const visionModel = this.genAI.getGenerativeModel({
       model: this.modelName,
       generationConfig: {
-        maxOutputTokens: 2048,  // ← suficiente para el JSON completo
-        temperature: 0.1,       // ← más determinista para JSON
-      },
+  maxOutputTokens: 4096,  // ← sube de 2048 a 4096
+  temperature: 0.1,
+},
     });
 
     const result = await visionModel.generateContent([
