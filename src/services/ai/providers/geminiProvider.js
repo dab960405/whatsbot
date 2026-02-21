@@ -74,6 +74,8 @@ class GeminiProvider {
         ],
       });
 
+      
+
       const result = await chat.sendMessage(userMessage);
       const response = result.response;
       const text = response.text();
@@ -89,6 +91,31 @@ class GeminiProvider {
       throw err;
     }
   }
+
+  async analyzeImage(imageBuffer, mimeType, prompt) {
+  try {
+    const result = await this.model.generateContent([
+      prompt,
+      {
+        inlineData: {
+          mimeType: mimeType,
+          data: imageBuffer.toString('base64'),
+        },
+      },
+    ]);
+
+    const text = result.response.text();
+    if (!text || text.trim().length === 0) {
+      throw new Error('Gemini Vision devolvió respuesta vacía');
+    }
+
+    logger.info(`Gemini Vision respondió (${text.length} chars)`);
+    return text.trim();
+  } catch (err) {
+    logger.error(`GeminiProvider Vision error: ${err.message}`);
+    throw err;
+  }
+}
 }
 
 module.exports = GeminiProvider;

@@ -1,7 +1,7 @@
 // ============================================================
 // SERVICIO — Procesador de mensajes (con menú interactivo)
 // ============================================================
-
+const { processPrescriptionImage } = require('./prescriptionService');
 const { sendTextMessage, markAsRead } = require('./whatsappService');
 const { getAIResponse } = require('./ai');
 const inventory = require('./inventory');
@@ -467,14 +467,28 @@ async function processIncomingMessage(messageData) {
   markAsRead(messageId).catch(() => {});
 
   // Solo texto
-  if (type !== 'text' || !text) {
-    try {
-      await sendTextMessage(from, NON_TEXT_MESSAGE);
-    } catch (err) {
-      logger.error('Error enviando non-text response:', err.message);
-    }
-    return;
+  if (type === 'image') {
+  try {
+    await sendTextMessage(from,
+      `📋 Recibí tu fórmula médica. Analizando... ⏳\n_Esto puede tomar unos segundos._`
+    );
+    const response = await processPrescriptionImage(messageData.mediaId, from);
+    await sendTextMessage(from, response);
+  } catch (err) {
+    logger.error('Error procesando imagen:', err.message);
+    await sendTextMessage(from, FALLBACK_MESSAGE);
   }
+  return;
+}
+
+if (type !== 'text' || !text) {
+  try {
+    await sendTextMessage(from, NON_TEXT_MESSAGE);
+  } catch (err) {
+    logger.error('Error enviando non-text response:', err.message);
+  }
+  return;
+}
 
   // Sanitizar
   const sanitizedText = text.trim().substring(0, MAX_INPUT_LENGTH);

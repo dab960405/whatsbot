@@ -66,6 +66,37 @@ class OpenAIProvider {
       throw err;
     }
   }
+  async analyzeImage(imageBuffer, mimeType, prompt) {
+  try {
+    const base64Image = imageBuffer.toString('base64');
+    const dataUrl = `data:${mimeType};base64,${base64Image}`;
+
+    const completion = await this.client.chat.completions.create({
+      model: 'gpt-4o',
+      max_tokens: 1000,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: dataUrl, detail: 'high' } },
+          ],
+        },
+      ],
+    });
+
+    const text = completion.choices?.[0]?.message?.content;
+    if (!text || text.trim().length === 0) {
+      throw new Error('GPT-4 Vision devolvió respuesta vacía');
+    }
+
+    logger.info(`OpenAI Vision respondió (${text.length} chars)`);
+    return text.trim();
+  } catch (err) {
+    logger.error(`OpenAIProvider Vision error: ${err.message}`);
+    throw err;
+  }
+}
 }
 
 module.exports = OpenAIProvider;

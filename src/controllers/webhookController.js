@@ -66,16 +66,15 @@ function receive(req, res) {
           );
 
           const messageData = {
-            messageId: message.id,
-            from: message.from,
-            timestamp: message.timestamp,
-            type: message.type,
-            text: message.text ? message.text.body : null,
-            contactName:
-              contact && contact.profile
-                ? contact.profile.name
-                : 'Cliente',
-          };
+  messageId:     message.id,
+  from:          message.from,
+  timestamp:     message.timestamp,
+  type:          message.type,
+  text:          message.text  ? message.text.body      : null,
+  mediaId:       message.image ? message.image.id        : null,  
+  mediaMimeType: message.image ? message.image.mime_type : null,  
+  contactName:   contact && contact.profile ? contact.profile.name : 'Cliente',
+};
 
           // Procesar cada mensaje de forma asíncrona sin bloquear
           processIncomingMessage(messageData).catch((err) => {
