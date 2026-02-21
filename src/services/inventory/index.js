@@ -114,9 +114,7 @@ async function getProductsByCategory(category) {
  */
 function formatProduct(product, showIndex = false, index = 0) {
   const status = product.available ? '✅ Disponible' : '❌ Agotado';
-  const price = product.price > 0 ? `
-$$
-{product.price.toFixed(2)}` : 'Consultar precio';
+  const price = product.price > 0 ? `$${product.price.toFixed(2)}` : 'Consultar precio';
   const presentation = product.presentation ? `\n   📋 ${product.presentation}` : '';
   const prefix = showIndex ? `*${index}.* ` : '💊 ';
 

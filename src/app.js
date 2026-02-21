@@ -8,6 +8,7 @@ const errorHandler = require('./middleware/errorHandler');
 const rateLimiter = require('./middleware/rateLimiter');
 
 const app = express();
+app.set('trust proxy', 1);
 
 // -----------------------------------------------------------
 // Body parser con captura de raw body para firma Meta

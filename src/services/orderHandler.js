@@ -90,19 +90,10 @@ function getOrderSummary(orderData) {
     `💊 *${orderData.product.name}*\n` +
     `   ${orderData.product.presentation || ''}\n` +
     `📦 Cantidad: ${orderData.quantity}\n` +
-    `💲 Precio unitario: 
-$$
-{orderData.product.price.toFixed(2)}\n` +
-    `💰 Subtotal:
-$$
-{total.toFixed(2)}\n` +
-    `🛵 Envío: 
-$$
-{shipping.toFixed(2)}\n` +
-    `━━━━━━━━━━━━━━━━━━\n` +
-    `💵 *TOTAL:
-$$
-{grandTotal.toFixed(2)}*\n` +
+    `💲 Precio unitario: $${orderData.product.price.toFixed(2)}\n` +
+`💰 Subtotal: $${total.toFixed(2)}\n` +
+`🛵 Envío: $${shipping.toFixed(2)}\n` +
+`💵 *TOTAL: $${grandTotal.toFixed(2)}*\n` +
     `━━━━━━━━━━━━━━━━━━\n\n` +
     `📍 ${orderData.address}\n` +
     `👤 ${orderData.name}\n` +
